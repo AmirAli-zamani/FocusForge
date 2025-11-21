@@ -1,0 +1,74 @@
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth import login, logout
+from .serializers import RegisterSerializer, LoginSerializer, UserSerializer
+from django.contrib.auth.models import update_last_login
+
+
+class RegisterAPI(APIView):
+    """
+    API endpoint for creating a new user account.
+    """
+
+    def post(self, request):
+        serializer = RegisterSerializer(data=request.data)
+
+        if serializer.is_valid():
+            user = serializer.save()
+            return Response({"message": "User created successfully."}, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LoginAPI(APIView):
+    """
+    API endpoint for logging in users.
+    """
+
+    def post(self, request):
+        serializer = LoginSerializer(data=request.data)
+
+        if serializer.is_valid():
+            user = serializer.validated_data['user']
+            login(request, user)  # Session login
+            update_last_login(None, user)
+
+            return Response({"message": "Logged in successfully."}, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LogoutAPI(APIView):
+    """
+    Log out the authenticated user.
+    """
+
+    def post(self, request):
+        logout(request)
+        return Response({"message": "Logged out successfully."})
+
+
+class ProfileAPI(APIView):
+    """
+    Return the profile data of the authenticated user.
+    """
+
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return Response({"error": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
+
+    def put(self, request):
+        if not request.user.is_authenticated:
+            return Response({"error": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        serializer = UserSerializer(request.user, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Profile updated successfully."})
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

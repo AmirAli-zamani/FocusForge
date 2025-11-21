@@ -1,0 +1,56 @@
+<!-- Landing/templates/Landing/landing.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusForge - Landing Page</title>
+    <link rel="stylesheet" href="{% static 'Landing/style.css' %}">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo">FocusForge</div>
+        <nav>
+            <a href="{% url 'task_manager:task_list' %}">Task Manager</a>
+            <a href="{% url 'pomodoro_engine_module:session_list' %}">Pomodoro</a>
+            <a href="{% url 'reporting_module:daily_report_list' %}">Reporting</a>
+            <a href="{% url 'user_authentication_module:login' %}">Login</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>مدیریت کامل کارها و زمان‌بندی شما</h1>
+        <p>تمرکز، سازماندهی و گزارش‌دهی همه در یکجا</p>
+        <a href="{% url 'task_manager:task_list' %}" class="cta-btn">شروع کنید</a>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="feature-card">
+            <h3>Task Management</h3>
+            <p>مدیریت همه کارهای روزانه و پروژه‌ها</p>
+        </div>
+        <div class="feature-card">
+            <h3>Pomodoro Engine</h3>
+            <p>تمرکز خود را با تکنیک پومودورو افزایش دهید</p>
+        </div>
+        <div class="feature-card">
+            <h3>Reporting</h3>
+            <p>گزارش پیشرفت خود را به صورت گرافیکی ببینید</p>
+        </div>
+        <div class="feature-card">
+            <h3>User Management</h3>
+            <p>مدیریت حساب‌ها و دسترسی کاربران</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 FocusForge. همه حقوق محفوظ است.</p>
+    </footer>
+</body>
+</html>
