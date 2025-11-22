@@ -17,7 +17,7 @@ def task_create(request):
             task = form.save(commit=False)
             task.owner = request.user
             task.save()
-            return redirect("task_list")
+            return redirect("task_management_module:task_list")
 
     else:
         form = TaskForm()
@@ -33,7 +33,7 @@ def task_edit(request, task_id):
         form = TaskForm(request.POST, instance=task)
         if form.is_valid():
             form.save()
-            return redirect("task_list")
+            return redirect("task_management_module:task_list")
 
     else:
         form = TaskForm(instance=task)
@@ -45,4 +45,4 @@ def task_edit(request, task_id):
 def task_delete(request, task_id):
     task = get_object_or_404(Task, id=task_id, owner=request.user)
     task.delete()
-    return redirect("task_list")
+    return redirect("task_management_module:task_list")

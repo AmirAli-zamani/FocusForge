@@ -20,18 +20,19 @@ from django.urls import path, include
 urlpatterns = [
     path("admin/", admin.site.urls),
 
+    #Landing
+    path("", include("Landing.urls")),
+
     # User Authentication
-    path("auth/", include("User_Authentication_Module.urls")),
+    path('auth/', include('User_Authentication_Module.urls', namespace='user_authentication_module')),
 
     # Task Management
-    path("tasks/", include("Task_Management_Module.urls")),
+    path('tasks/', include('Task_Management_Module.urls', namespace='task_management_module')),
+
 
     # Pomodoro Engine
     path("pomodoro/", include("Pomodoro_Engine_Module.urls")),
 
     # Reporting
     path("reports/", include("Reporting_Module.urls")),
-
-    #Landing
-    path("", include("Landing.urls"))
 ]
