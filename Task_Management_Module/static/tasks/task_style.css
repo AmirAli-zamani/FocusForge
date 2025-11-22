@@ -1,0 +1,179 @@
+/* فایل: static/tasks/task_style.css */
+
+/* === بدن صفحه و پس‌زمینه === */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* === کانتینر فرم و لیست تسک‌ها === */
+.auth-container,
+.container {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    width: 400px;
+    text-align: center;
+}
+
+.auth-container h2,
+.container h2 {
+    margin-bottom: 20px;
+    color: #ffd32a;
+}
+
+/* === فرم‌ها === */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    text-align: left;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select,
+input[type="date"],
+input[type="datetime-local"] {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    font-size: 14px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    background: rgba(255,255,255,0.2);
+}
+
+/* === دکمه‌ها === */
+.btn,
+.task-item button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+/* دکمه اصلی */
+.btn {
+    background: #2ed573;
+    color: #000;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/* دکمه اصلی هاور */
+.btn:hover {
+    background: #26c06d;
+}
+
+/* دکمه برگشت به لندینگ */
+.btn-back {
+    display: inline-block;
+    margin-bottom: 20px;
+    background: #ff6b6b;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.btn-back:hover {
+    background: #ff4757;
+}
+
+/* دکمه‌های ویرایش و حذف تسک */
+.task-item button {
+    background: #ff6b6b;
+    margin-left: 5px;
+}
+
+.task-item button:hover {
+    background: #ff4757;
+}
+
+/* === لیست تسک‌ها === */
+.task-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+}
+
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,255,255,0.1);
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+}
+
+/* === پیام‌ها و خطاها === */
+.messages,
+.form-errors {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 15px;
+    color: #ff6b6b;
+    font-size: 14px;
+    text-align: left;
+}
+
+.messages li,
+.form-errors li {
+    margin-bottom: 5px;
+}
+
+.messages li.success {
+    color: #2ed573;
+}
+
+.messages li.error {
+    color: #ff6b6b;
+}
+
+/* === لینک‌ها === */
+p a {
+    color: #ffd32a;
+    text-decoration: none;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
+
+/* === Responsive (صفحه کوچک) === */
+@media screen and (max-width: 480px) {
+    .auth-container,
+    .container {
+        width: 90%;
+        padding: 20px;
+    }
+}

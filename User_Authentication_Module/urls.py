@@ -5,7 +5,7 @@ app_name = 'user_authentication_module'
 
 urlpatterns = [
     # Landing Page
-    path("", html_views.landing_view, name="landing"),
+    path("", html_views.landing_view, name="Landing"),
     
     # HTML Views
     path('register/', html_views.register_view, name='register'),
@@ -13,6 +13,7 @@ urlpatterns = [
     path('logout/', html_views.logout_view, name='logout'),
     path('profile/', html_views.profile_view, name='profile'),
     path('profile/update/', html_views.profile_update_view, name='profile_update'),
+    path('tasks/', html_views.task_list, name='task_list'),
 
     # API Views
     path('api/register/', api_views.APIRegisterView.as_view(), name='api_register'),

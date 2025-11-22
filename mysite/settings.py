@@ -28,7 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 # Use the custom user model instead of Django's default
-# AUTH_USER_MODEL = 'User_Authentication_Module.CustomUser'
+AUTH_USER_MODEL = 'User_Authentication_Module.CustomUser'
 
 # Application definition
 INSTALLED_APPS = [
@@ -139,3 +139,5 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_REDIRECT_URL = '/tasks/'
+LOGOUT_REDIRECT_URL = '/login/'

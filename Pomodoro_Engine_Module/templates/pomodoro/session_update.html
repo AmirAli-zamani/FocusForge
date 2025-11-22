@@ -1,0 +1,16 @@
+{% extends "pomodoro/base.html" %}
+
+{% block title %}Edit Pomodoro Session{% endblock %}
+
+{% block content %}
+<h2>Edit Session</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn">Save Changes</button>
+</form>
+
+<p class="back-link">
+    <a href="{% url 'pomodoro_engine_module:session_list' %}">← Back to sessions</a>
+</p>
+{% endblock %}

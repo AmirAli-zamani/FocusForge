@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>لیست تسک‌ها | FocusForge</title>
+    <link rel="stylesheet" href="{% static 'tasks/task_style.css' %}">
+</head>
+<body>
+    <div class="auth-container">
+        <h2>لیست تسک‌ها</h2>
+
+        <!-- دکمه برگشت به صفحه اصلی -->
+        <a href="{% url 'Landing:Landing' %}" class="btn btn-back">بازگشت به صفحه اصلی</a>
+
+        {% if tasks %}
+            <ul class="task-list">
+                {% for task in tasks %}
+                    <li class="task-item">
+                        <div>
+                            <strong>{{ task.title }}</strong><br>
+                            <span>{{ task.description }}</span>
+                        </div>
+                        <div>
+                            <a href="{% url 'task_management_module:task_edit' task.id %}">
+                                <button>ویرایش</button>
+                            </a>
+                            <a href="{% url 'task_management_module:task_delete' task.id %}">
+                                <button>حذف</button>
+                            </a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>هیچ تسکی وجود ندارد.</p>
+        {% endif %}
+
+        <a href="{% url 'task_management_module:task_create' %}" class="btn">+ تسک جدید</a>
+    </div>
+</body>
+</html>

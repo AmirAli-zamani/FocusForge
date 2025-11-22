@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Weekly Productivity Chart{% endblock %}
+
+{% block content %}
+<h1>Weekly Productivity</h1>
+<canvas id="productivityChart" width="800" height="400"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('productivityChart').getContext('2d');
+const chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {{ labels|safe }},
+        datasets: [
+            {
+                label: 'Tasks Completed',
+                data: {{ tasks_data|safe }},
+                borderColor: 'blue',
+                fill: false
+            },
+            {
+                label: 'Pomodoros Completed',
+                data: {{ pomodoros_data|safe }},
+                borderColor: 'green',
+                fill: false
+            },
+            {
+                label: 'Productivity Score',
+                data: {{ productivity_data|safe }},
+                borderColor: 'red',
+                fill: false
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: 'top' }
+        }
+    }
+});
+</script>
+
+<a href="{% url 'reporting_module:daily_report_list' %}">Back to Reports</a>
+{% endblock %}

@@ -4,12 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Login | FocusForge</title>
+
+    <!-- Shared styles -->
     <link rel="stylesheet" href="{% static 'Landing/style.css' %}">
     <link rel="stylesheet" href="{% static 'auth/auth_style.css' %}">
 </head>
+
 <body>
     <div class="auth-container">
         <h2>Login to FocusForge</h2>
+
+        <!-- Display Django messages -->
         {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
@@ -17,12 +22,52 @@
                 {% endfor %}
             </ul>
         {% endif %}
+
+        <!-- Display form non-field errors (like invalid username/password) -->
+        {% if form.non_field_errors %}
+            <ul class="form-errors">
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
         <form method="POST" novalidate>
             {% csrf_token %}
-            {{ form.as_p }}
+
+            <!-- Username field -->
+            <div class="form-group">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <ul class="field-errors">
+                        {% for error in form.username.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <!-- Password field -->
+            <div class="form-group">
+                {{ form.password.label_tag }}
+                {{ form.password }}
+                {% if form.password.errors %}
+                    <ul class="field-errors">
+                        {% for error in form.password.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
             <button type="submit" class="btn">Login</button>
         </form>
-        <p>Don't have an account? <a href="{% url 'user_authentication_module:register' %}">Register here</a></p>
+
+        <p class="bottom-text">
+            Don't have an account?
+            <a href="{% url 'user_authentication_module:register' %}">Register here</a>
+        </p>
     </div>
 </body>
 </html>

@@ -1,0 +1,50 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if form.instance.pk %}ویرایش تسک{% else %}افزودن تسک{% endif %}</title>
+    <link rel="stylesheet" href="{% static 'tasks/task_style.css' %}">
+</head>
+<body>
+<div class="container">
+    <h2>{% if form.instance.pk %}ویرایش تسک{% else %}افزودن تسک جدید{% endif %}</h2>
+
+    {% if form.errors %}
+        <ul class="form-errors">
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li>{{ field.label }}: {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form method="POST" novalidate>
+        {% csrf_token %}
+        <!-- همه فیلدها به صورت خودکار رندر می‌شوند -->
+        {% for field in form %}
+            <p>
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.help_text %}
+                    <small style="color:#ccc;">{{ field.help_text }}</small>
+                {% endif %}
+            </p>
+        {% endfor %}
+
+        <button type="submit" class="btn">
+            {% if form.instance.pk %}ویرایش{% else %}افزودن{% endif %}
+        </button>
+    </form>
+
+    <p style="margin-top:15px;">
+        <a href="{% url 'task_management_module:task_list' %}">بازگشت به لیست تسک‌ها</a>
+    </p>
+</div>
+</body>
+</html>
