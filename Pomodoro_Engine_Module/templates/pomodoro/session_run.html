@@ -1,0 +1,42 @@
+{% extends "pomodoro/base.html" %}
+
+{% block title %}Pomodoro Session{% endblock %}
+
+{% block content %}
+<div class="pomodoro-container">
+    <h2>Pomodoro Session</h2>
+
+    <div class="mini-calendar"><span id="calendar"></span></div>
+    <div class="live-clock" id="clock"></div>
+    <div id="timer" class="timer-display">25:00</div>
+
+    <form method="POST" id="controls">
+        {% csrf_token %}
+        <button name="action" value="pause" class="btn small-btn">Pause</button>
+        <button name="action" value="resume" class="btn small-btn">Resume</button>
+        <button name="action" value="stop" class="btn done-btn">Finish</button>
+    </form>
+
+    <p class="back-link">
+        <a href="{% url 'pomodoro_engine_module:session_list' %}">← Back to sessions</a>
+    </p>
+</div>
+
+<script>
+setInterval(() => {
+    const now = new Date();
+    document.getElementById("clock").innerText = now.toLocaleTimeString();
+    document.getElementById("calendar").innerText = now.toLocaleDateString();
+}, 1000);
+
+let total = {{ session.duration_minutes }} * 60;
+function updateTimer() {
+    let min = Math.floor(total / 60);
+    let sec = total % 60;
+    document.getElementById("timer").innerText =
+        `${min.toString().padStart(2,'0')}:${sec.toString().padStart(2,'0')}`;
+    total--;
+}
+setInterval(updateTimer, 1000);
+</script>
+{% endblock %}

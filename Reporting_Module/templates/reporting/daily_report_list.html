@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Daily Reports{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>My Daily Reports</h2>
+
+    {% if reports %}
+        <!-- Cards View -->
+        <div class="reports-cards">
+            {% for report in reports %}
+                <div class="report-card">
+                    <h3>{{ report.date|date:"M d, Y" }}</h3>
+                    <p>Tasks Completed: <span class="tasks-completed">{{ report.tasks_completed }}</span></p>
+                    <p>Pomodoros Completed: <span class="pomodoros-completed">{{ report.pomodoros_completed }}</span></p>
+                    <p>Productivity Score: <span class="productivity-score">{{ report.productivity_score }}</span></p>
+                    <div class="actions">
+                        <a href="{% url 'reporting_module:daily_report_detail' report.pk %}" class="btn small-btn">View Detail</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Table View -->
+        <table class="reports-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Tasks Completed</th>
+                    <th>Pomodoros Completed</th>
+                    <th>Productivity Score</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in reports %}
+                <tr>
+                    <td>{{ report.date|date:"M d, Y" }}</td>
+                    <td>{{ report.tasks_completed }}</td>
+                    <td>{{ report.pomodoros_completed }}</td>
+                    <td>{{ report.productivity_score }}</td>
+                    <td>
+                        <a href="{% url 'reporting_module:daily_report_detail' report.pk %}" class="btn small-btn">View</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <div class="report-card no-reports" style="text-align:center;">
+            <p style="font-size:1.1rem; opacity:0.7;">No reports found for now.</p>
+            <a href="{% url 'reporting_module:daily_report_chart' %}" class="btn create-btn">View Chart</a>
+        </div>
+    {% endif %}
+
+    <a href="{% url 'reporting_module:daily_report_chart' %}" class="btn create-btn">View Chart</a>
+</div>
+{% endblock %}

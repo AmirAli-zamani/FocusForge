@@ -1,0 +1,172 @@
+/* فایل: static/reporting/report_style.css */
+
+/* === بدن صفحه و پس‌زمینه === */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #111224, #1b1d32);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    padding-top: 50px;
+}
+
+/* === کانتینر اصلی === */
+.container {
+    background-color: rgba(0, 0, 0, 0.75);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    width: 450px;
+    text-align: center;
+}
+
+/* === عنوان صفحه === */
+.container h2 {
+    margin-bottom: 25px;
+    color: #ffd32a;
+}
+
+/* === کارت هر گزارش === */
+.report-card {
+    background: rgba(255,255,255,0.05);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #444;
+    text-align: left;
+}
+
+.report-card h3 {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.report-card p {
+    margin: 3px 0;
+}
+
+/* وضعیت */
+.tasks-completed,
+.pomodoros-completed,
+.productivity-score {
+    font-weight: bold;
+}
+
+/* دکمه‌ها */
+.btn,
+.report-card .actions a {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+    transition: background 0.3s ease;
+}
+
+.btn {
+    background: #2ed573;
+}
+
+.btn:hover {
+    background: #26c06d;
+}
+
+.report-card .actions a {
+    background: #6C63FF;
+    font-size: 14px;
+    margin-right: 5px;
+}
+
+.report-card .actions a:hover {
+    background: #574fd1;
+}
+
+/* جدول گزارش‌ها */
+.reports-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.reports-table th,
+.reports-table td {
+    padding: 10px;
+    border: 1px solid #444;
+    text-align: center;
+}
+
+.reports-table th {
+    background-color: #1b1d32;
+}
+
+/* کارت placeholder وقتی گزارشی نیست */
+.no-reports {
+    background: rgba(255,255,255,0.05);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    border: 1px dashed #444;
+}
+
+/* لینک‌ها */
+a {
+    color: #ffd32a;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* === Responsive (صفحه کوچک) === */
+@media screen and (max-width: 480px) {
+    .container {
+        width: 90%;
+        padding: 20px;
+    }
+}
+
+/* === Navigation === */
+header {
+    background-color: #1b1d32;
+    padding: 15px 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: 'Arial', sans-serif;
+    color: #ffb86c;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+nav a.nav-btn {
+    text-decoration: none;
+    color: #fff;
+    background-color: #6C63FF;
+    padding: 8px 16px;
+    border-radius: 8px;
+    margin-left: 10px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+nav a.nav-btn:hover {
+    background-color: #5750c8;
+    color: #fff;
+}
+

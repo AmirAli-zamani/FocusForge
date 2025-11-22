@@ -1,0 +1,33 @@
+{% extends "pomodoro/base.html" %}
+
+{% block title %}Your Pomodoro Sessions{% endblock %}
+
+{% block content %}
+<a href="{% url 'pomodoro_engine_module:session_create' %}" class="btn create-btn">+ Start New Session</a>
+
+<div class="session-list">
+    {% for s in sessions %}
+    <div class="session-card">
+        <p><strong>Task:</strong> {{ s.task }}</p>
+        <p><strong>Start:</strong> {{ s.start_time }}</p>
+        <p><strong>End:</strong> {{ s.end_time|default:"—" }}</p>
+        <p><strong>Duration:</strong> {{ s.duration_minutes }} min</p>
+        <p><strong>Status:</strong>
+            {% if s.is_completed %}
+                <span class="done">Completed</span>
+            {% else %}
+                <span class="pending">In Progress</span>
+            {% endif %}
+        </p>
+        <div class="actions">
+            <a href="{% url 'pomodoro_engine_module:session_update' s.pk %}" class="btn small-btn">Edit</a>
+            {% if not s.is_completed %}
+                <a href="{% url 'pomodoro_engine_module:session_complete' s.pk %}" class="btn small-btn done-btn">Mark Done</a>
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <p>No sessions yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}
