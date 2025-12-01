@@ -6,16 +6,29 @@
 <div class="pomodoro-container">
     <h2>Pomodoro Session</h2>
 
+    <!-- تاریخ و ساعت زنده -->
     <div class="mini-calendar"><span id="calendar"></span></div>
     <div class="live-clock" id="clock"></div>
-    <div id="timer" class="timer-display">25:00</div>
 
-    <form method="POST" id="controls">
+    <!-- اطلاعات تسک و وضعیت -->
+    <p><strong>Task:</strong> {{ session.task }}</p>
+    <p><strong>Status:</strong> <span id="status">{{ session.status|capfirst }}</span></p>
+
+    <!-- تایمر -->
+    <div id="timer" class="timer-display">00:00</div>
+
+    <!-- دکمه‌ها -->
+    <div id="controls">
         {% csrf_token %}
-        <button name="action" value="pause" class="btn small-btn">Pause</button>
-        <button name="action" value="resume" class="btn small-btn">Resume</button>
-        <button name="action" value="stop" class="btn done-btn">Finish</button>
-    </form>
+        {% if session.status == "running" %}
+            <button type="button" class="btn small-btn" id="pause-btn">Pause</button>
+        {% elif session.status == "paused" %}
+            <button type="button" class="btn small-btn" id="resume-btn">Resume</button>
+        {% endif %}
+        {% if session.status != "completed" %}
+            <button type="button" class="btn done-btn" id="stop-btn">Finish</button>
+        {% endif %}
+    </div>
 
     <p class="back-link">
         <a href="{% url 'pomodoro_engine_module:session_list' %}">← Back to sessions</a>
@@ -23,20 +36,91 @@
 </div>
 
 <script>
+// نمایش ساعت و تاریخ زنده
 setInterval(() => {
     const now = new Date();
     document.getElementById("clock").innerText = now.toLocaleTimeString();
     document.getElementById("calendar").innerText = now.toLocaleDateString();
 }, 1000);
 
-let total = {{ session.duration_minutes }} * 60;
-function updateTimer() {
-    let min = Math.floor(total / 60);
-    let sec = total % 60;
-    document.getElementById("timer").innerText =
-        `${min.toString().padStart(2,'0')}:${sec.toString().padStart(2,'0')}`;
-    total--;
+// تایمر Pomodoro واقعی
+let duration = {{ session.actual_duration_seconds|default:"0" }};
+if(duration == 0){
+    duration = {{ session.duration_minutes }} * 60;
 }
+let status = "{{ session.status }}";
+const timerEl = document.getElementById("timer");
+
+function updateTimer() {
+    if(status === "running" && duration > 0){
+        duration--;
+    }
+    let min = Math.floor(duration / 60);
+    let sec = duration % 60;
+    timerEl.innerText = `${min.toString().padStart(2,'0')}:${sec.toString().padStart(2,'0')}`;
+}
+
 setInterval(updateTimer, 1000);
+
+// AJAX برای کنترل دکمه‌ها
+const statusEl = document.getElementById("status");
+
+async function sendAction(action){
+    const formData = new FormData();
+    formData.append("action", action);
+
+    const response = await fetch("{% url 'pomodoro_engine_module:update_session' session.id %}", {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "X-Requested-With": "XMLHttpRequest"
+        },
+        body: formData
+    });
+
+    if(response.ok){
+        const data = await response.json();
+
+        if(action === "pause"){
+            statusEl.innerText = "Paused";
+            status = "paused";
+            document.getElementById("pause-btn")?.replaceWith(createResumeBtn());
+        } 
+        else if(action === "resume"){
+            statusEl.innerText = "Running";
+            status = "running";
+            document.getElementById("resume-btn")?.replaceWith(createPauseBtn());
+        } 
+        else if(action === "stop"){
+            window.location.href="{% url 'pomodoro_engine_module:session_list' %}";
+        }
+    }
+}
+
+// توابع ایجاد دکمه‌ها پویا
+function createPauseBtn(){
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "btn small-btn";
+    btn.id = "pause-btn";
+    btn.innerText = "Pause";
+    btn.addEventListener("click", ()=>sendAction("pause"));
+    return btn;
+}
+
+function createResumeBtn(){
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "btn small-btn";
+    btn.id = "resume-btn";
+    btn.innerText = "Resume";
+    btn.addEventListener("click", ()=>sendAction("resume"));
+    return btn;
+}
+
+// اضافه کردن event listener به دکمه‌ها
+document.getElementById("pause-btn")?.addEventListener("click", ()=>sendAction("pause"));
+document.getElementById("resume-btn")?.addEventListener("click", ()=>sendAction("resume"));
+document.getElementById("stop-btn")?.addEventListener("click", ()=>sendAction("stop"));
 </script>
 {% endblock %}

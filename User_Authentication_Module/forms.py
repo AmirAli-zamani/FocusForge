@@ -8,12 +8,17 @@ from django.contrib.auth import authenticate
 # Registration Form
 # ----------------------------
 class RegisterForm(UserCreationForm):
+    email = forms.EmailField(required=True, label="Email")  # الزامی کردن ایمیل
+
     class Meta:
         model = CustomUser
         fields = ("username", "email", "password1", "password2")
 
-    # Optional: add clean_email or clean_username if you want to check for duplicates
-
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if CustomUser.objects.filter(email=email).exists():
+            raise ValidationError("This email is already registered.")
+        return email
 # ----------------------------
 # Login Form
 # ----------------------------
