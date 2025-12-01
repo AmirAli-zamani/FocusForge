@@ -14,20 +14,18 @@ def landing_view(request):
 
 
 def register_view(request):
-    """Handle user registration and automatically log in the user"""
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-            user = form.save()  # Save the new user
-
-            # Automatically log in the new user
+            user = form.save()
             login(request, user)
-
-            messages.success(request, "Registration successful. You are now logged in.")
-            return redirect("task_management_module:task_list")  # Redirect to Task Management page
+            messages.success(request, "Registration successful! You are now logged in.")
+            return redirect("task_management_module:task_list")
+        else:
+            messages.error(request, "Please fix the errors below.")
     else:
-        form = RegisterForm()  # Empty form for GET request
-
+        form = RegisterForm()
+    
     return render(request, "auth/register.html", {"form": form})
 
 

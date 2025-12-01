@@ -1,0 +1,30 @@
+version: "3.9"
+# python manage.py createsuperuser:
+
+services:
+  db:
+    image: postgres:16
+    container_name: forceforge-db
+    restart: always
+    environment:
+      POSTGRES_DB: focusforge_db
+      POSTGRES_USER: focusforge_admin
+      POSTGRES_PASSWORD: Amir@li3902
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    container_name: forceforge-web
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    entrypoint: ["/app/entrypoint.sh"]
+
+volumes:
+  postgres_data:
