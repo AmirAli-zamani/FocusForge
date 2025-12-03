@@ -10,8 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 import os
-from decouple import config
 from pathlib import Path
+import pymysql
+
+# PyMySQL را به عنوان MySQL driver استفاده کن
+pymysql.install_as_MySQLdb()
+
+import dj_database_url
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +27,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)j*54-5xrg%t)o5p4#hy^wo-=ue*a86x=9s=25#b8s%zi^o@f6'
+# مقدار واقعی SECRET_KEY را در متغیر محیطی تنظیم کن (مثلاً در فایل .env)
+SECRET_KEY = config(
+    "SECRET_KEY",
+    default="django-insecure-)j*54-5xrg%t)o5p4#hy^wo-=ue*a86x=9s=25#b8s%zi^o@f6",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = ["*"]
+# دامنه‌هایی که بعداً می‌خواهی استفاده کنی را اینجا بگذار، بدون http/https
+# مثال:
+# ALLOWED_HOSTS = ["forceforge.ir", "www.forceforge.ir"]
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="*").split(",")
 
 # Use the custom user model instead of Django's default
 AUTH_USER_MODEL = 'User_Authentication_Module.CustomUser'
@@ -88,16 +101,28 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME', default='focusforge_db'),
-        'USER': config('DB_USER', default='focusforge_admin'),
-        'PASSWORD': config('DB_PASSWORD', default='Amir@li3902'),
-        'HOST': config('DB_HOST', default='localhost'),  # ← اسم سرویس Docker
-        'PORT': config('DB_PORT', default='5432'),
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if DATABASE_URL:
+    # parse DATABASE_URL like: mysql://user:pass@host:3306/dbname
+    DATABASES = {
+        "default": dj_database_url.parse(DATABASE_URL, conn_max_age=600)
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': config('DB_NAME', default='focusforge_db'),
+            'USER': config('DB_USER', default='focusforge_admin'),
+            'PASSWORD': config('DB_PASSWORD', default='Amir@li3902'),
+            'HOST': config('DB_HOST', default='db'),  # ← اسم سرویس Docker
+            'PORT': config('DB_PORT', default='3306'),
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+                'charset': 'utf8mb4',
+            },
+        }
+    }
 
 
 # Password validation

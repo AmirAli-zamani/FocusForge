@@ -2,10 +2,9 @@ FROM python:3.12
 
 WORKDIR /app
 
-# نصب ابزارهای build و libpq-dev برای psycopg2
+# نصب ابزارهای build
 RUN apt-get update && apt-get install -y \
     build-essential \
-    libpq-dev \
     gcc \
     && rm -rf /var/lib/apt/lists/*
 
